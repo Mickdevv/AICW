@@ -1,4 +1,4 @@
-import numpy
+
 from numpy import genfromtxt
 
 
