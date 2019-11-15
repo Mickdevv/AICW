@@ -18,14 +18,14 @@ def main():
 
     for a in range(N):
         column = []
-        nodeList.append(Node(int(a), bool(False), int(text_file[a * 2 + 1]), int(text_file[a * 2 + 2]), -1))
+        nodeList.append(Node(int(a + 1), bool(False), float(text_file[a * 2 + 1]), float(text_file[a * 2 + 2]), -1))
         for b in range(N):
-            column.append(text_file[a + b + 2 * N + 1])
+            column.append(text_file[b + 2 * N + 1 + N * a])
 
         nodeMatrix.append(column)
 
     nodeList[0].tentDistance = 0
-    firstNode = nodeList[0]
+    firstNode = nodeList[2]
     destination = nodeList[-1]
     connectedTo = []
 
@@ -33,12 +33,26 @@ def main():
     unvisitedNodes = nodeList
     for b in range(len(nodeMatrix)):
         # print(nodeMatrix[currentNode.nodeNumber][b])
-        if nodeMatrix[currentNode.nodeNumber][b] == 1.0:
+        if nodeMatrix[b][currentNode.nodeNumber - 1] == 1.0:
+            tentDistanceCalc = pow((pow((nodeList[b].x-currentNode.x), 2) + pow((nodeList[b].y-currentNode.y), 2)), 0.5)
+            nodeList[b].tentDistance = tentDistanceCalc
             connectedTo.append(nodeList[b])
-    for a in range(len(nodeMatrix)):
-        print(nodeMatrix[a])
+    closestNode = connectedTo[0]
+    for c in range(len(connectedTo)):
+        if closestNode.tentDistance > connectedTo[c].tentDistance:
+            closestNode = connectedTo[c]
 
-    print(connectedTo)
+
+
+    # for a in range(len(nodeMatrix)):
+    #    print(nodeMatrix[a])
+
+    for a in range(len(connectedTo)):
+        print(connectedTo[a].nodeNumber)
+        print(connectedTo[a].tentDistance)
+
+    print()
+    print(closestNode.nodeNumber)
 
 
 main()
