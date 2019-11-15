@@ -10,7 +10,7 @@ def FileImport():
             self.x = x
             self.y = y
 
-    text_file = genfromtxt("generated30-1.cav", delimiter=',')
+    text_file = genfromtxt("generated1000-1.cav", delimiter=',')
 
     N = int(text_file[0])
     nodeList = []
