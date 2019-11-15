@@ -1,0 +1,2 @@
+# AICW
+AI coursework
