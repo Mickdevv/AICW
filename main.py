@@ -4,12 +4,12 @@ from numpy import genfromtxt
 
 def main():
     class Node:
-        def __init__(self, nodeNumber, visited, x, y, shortestFrom, tentDistance):
+        def __init__(self, nodeNumber, visited, x, y, previousNode, tentDistance):
             self.nodeNumber = nodeNumber
             self.visited = visited
             self.x = x
             self.y = y
-            self.shortestFrom = shortestFrom
+            self.previousNode = previousNode
             self.tentDistance = tentDistance
 
     text_file = genfromtxt("generated30-1.cav", delimiter=',')
@@ -35,44 +35,70 @@ def main():
     unvisitedNodes = nodeList
     distanceFromCurrent = []
 
-    for i in range(3):  # start of the looping
+    while len(unvisitedNodes) > 0:  # start of the looping
 
         connectedTo = []
+
         print(currentNode.nodeNumber)
-        for b in range(len(nodeMatrix)):  # creates a list of the node's neighbors and calculates their distances from the current node
+        for b in range(len(
+                nodeMatrix)):  # creates a list of the node's unvisited neighbors and calculates their distances from the current node
             # print(nodeMatrix[currentNode.nodeNumber][b])
             if nodeMatrix[b][currentNode.nodeNumber - 1] == 1.0 and not nodeList[b].visited:
                 distanceFromCurrentCalc = math.sqrt(
                     pow((currentNode.x - nodeList[b].x), 2) + pow((currentNode.y - nodeList[b].y), 2))
                 distanceFromCurrent.append(distanceFromCurrentCalc)
                 connectedTo.append(nodeList[b])
+                # Up to here everything seems to be fine
 
-
-                if currentNode.tentDistance == -1:
-                    currentNode.tentDistance = 0
-                if nodeList[b].tentDistance + distanceFromCurrentCalc < currentNode.tentDistance:
-                    nodeList[b].tentDistance = currentNode.tentDistance + distanceFromCurrentCalc
+                # this for loop goes through the lists of connections and their distances and assigns the correct tentative values
+        for a in range(len(connectedTo)):
+            if connectedTo[a].tentDistance == -1 or nodeList[connectedTo[a].nodeNumber - 1].tentDistance > nodeList[currentNode.nodeNumber - 1].tentDistance + distanceFromCurrent[a]:
+                nodeList[connectedTo[a].nodeNumber - 1].tentDistance = nodeList[currentNode.nodeNumber - 1].tentDistance + distanceFromCurrent[a]
+                nodeList[connectedTo[a].nodeNumber - 1].previousNode = currentNode.nodeNumber
 
         if len(connectedTo) > 0:
-            closestNode = connectedTo[0]
+            closestNode = nodeList[connectedTo[0].nodeNumber-1]
             for c in range(len(connectedTo)):  # identifies the closest node to the current node
-                if closestNode.tentDistance > connectedTo[c].tentDistance:
-                    closestNode = connectedTo[c]
+                if closestNode.tentDistance > nodeList[connectedTo[c].nodeNumber-1].tentDistance:
+                    closestNode = nodeList[connectedTo[c].nodeNumber-1]
             nodeList[currentNode.nodeNumber - 1].visited = True
             for a in range(len(connectedTo)):
                 print(connectedTo[a].nodeNumber, connectedTo[a].tentDistance)
+        else:
+            print("irvbeiurbeiuriuerfn")
+            for a in range(len(nodeList)):
+                distanceFromCurrent = []
+                connectedTo = []
+                print(1)
+                for b in range(len(
+                        nodeMatrix)):  # creates a list of the node's unvisited neighbors and calculates their distances from the current node
+                    # print(nodeMatrix[currentNode.nodeNumber][b])
+                    print(2)
 
+                    if nodeMatrix[b][currentNode.nodeNumber - 1] == 1.0 and not nodeList[b].visited:
+                        distanceFromCurrentCalc = math.sqrt(
+                            pow((currentNode.x - nodeList[b].x), 2) + pow((currentNode.y - nodeList[b].y), 2))
+                        distanceFromCurrent.append(distanceFromCurrentCalc)
+                        connectedTo.append(nodeList[b])
+                        print(3)
+                if nodeList[a].visited == True and len(connectedTo) > 0:
+                    currentNode = nodeList[a]
+                    print(4)
+                    break
+                print()
+
+
+        nodeList[currentNode.nodeNumber - 1].visited = True
         currentNode = closestNode
-        distanceAcc = distanceAcc + closestNode.tentDistance
-        print(distanceAcc)
         print()
         unvisitedNodes = []
         for a in range(len(nodeList)):
             if not nodeList[a].visited:
                 unvisitedNodes.append(nodeList[a])
+
     print("TD")
     for a in range(len(nodeList)):
-        print(nodeList[a].tentDistance)
+        print(nodeList[a].nodeNumber, nodeList[a].previousNode, nodeList[a].tentDistance)
 
     #    for a in range(len(nodeMatrix)):
     #    print(nodeMatrix[a])
