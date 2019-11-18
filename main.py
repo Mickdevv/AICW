@@ -114,10 +114,14 @@ def main():
                             hasUnvisitedNeighbors = True
                             break
 ################################################ something wrong here #################################################
-                    for c in range(closestNodeIndex, len(distanceFromCurrent)):  # identifies the closest node to the current node
+                    print(len(distanceFromCurrent))
+                    print(closestNodeIndex)
+                    for c in range(len(distanceFromCurrent)):  # identifies the closest node to the current node
                         if distanceFromCurrent[closestNodeIndex] > distanceFromCurrent[c] and not nodeList[connectedTo[c].nodeNumber - 1].visited:
                             closestNodeIndex = c
+                            print(closestNodeIndex)
                     closestNode = nodeList[connectedTo[closestNodeIndex].nodeNumber-1]
+
 ################################################ something wrong here #################################################
                     nodeList[currentNode.nodeNumber - 1].visited = True
                     for d in range(len(connectedTo)):
