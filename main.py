@@ -5,6 +5,7 @@ from numpy import genfromtxt
 
 def main():
     start_time = time.time()
+
     class Node:
         def __init__(self, nodeNumber, visited, x, y, previousNode, tentDistance):
             self.nodeNumber = nodeNumber
@@ -14,7 +15,7 @@ def main():
             self.previousNode = previousNode
             self.tentDistance = tentDistance
 
-    text_file = genfromtxt("generated100-1.cav", delimiter=',')
+    text_file = genfromtxt("generated30-1.cav", delimiter=',')
 
     N = int(text_file[0])
     nodeList = []
@@ -37,7 +38,6 @@ def main():
     hasUnvisitedNeighbours = True
     allNodesVisited = False
     currentNode = nodeList[0]
-    unvisitedNodes = nodeList
 
     # Up to here all has been reading in from the file and sorting the information into the appropriate format for
     # the program to deal with
@@ -100,9 +100,9 @@ def main():
             closestNode = nodeList[connectedTo[closestNodeIndex].nodeNumber-1]
 
             nodeList[currentNode.nodeNumber - 1].visited = True
-
+            print("***END IF***")
         else:  # Goes through the list of nodes and finds a visited node with an unvisited neighbor and starts from there
-            # print("***ELSE***")
+            print("***ELSE***")
             print ()
             print (currentNode.nodeNumber)
             connectedTo = []
@@ -149,6 +149,7 @@ def main():
                 if hasUnvisitedNeighbours:
                     print("break2")
                     break
+                print("***END ELSE***")
 
 
         # nodeList[currentNode.nodeNumber-1].previousNode = currentNode.nodeNumber
@@ -173,23 +174,26 @@ def main():
         print(nodeList[a].nodeNumber, nodeList[a].previousNode, nodeList[a].tentDistance)
 
     path = []
-    a=N
+    a = N
     duplicates = False
+    f = open("myfile.txt", "w")
     while a != 0 and not duplicates:
         path.append(nodeList[a-1].nodeNumber)
         a = nodeList[a-1].previousNode
-        for b in range(len(path)):
-            if a == path[b]:
-                duplicates = True
+        if len(path) > N:
+            duplicates = True
 
     if duplicates:
         print("No path found")
     else:
-
+        path.reverse()
         print(path)
+        for i in range(len(path)):
+            f.write(str(path[i]) + ", ")
         print(nodeList[N-1].tentDistance)
+        f.write("Path length: " + str(nodeList[N-1].tentDistance))
+        f.write(" Time Taken: %s seconds" % (time.time() - start_time))
     print("--- %s seconds ---" % (time.time() - start_time))
-    print("Fuck yeah")
 
 
 main()
