@@ -15,7 +15,7 @@ def main():
             self.previousNode = previousNode
             self.tentDistance = tentDistance
 
-    text_file = genfromtxt("generated30-1.cav", delimiter=',')
+    text_file = genfromtxt("generated5000-1.cav", delimiter=',')
 
     N = int(text_file[0])
     nodeList = []
